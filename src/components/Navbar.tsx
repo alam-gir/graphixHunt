@@ -5,17 +5,14 @@ import { FC } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import NavList from "./NavList";
 import { signOut, useSession } from "next-auth/react";
-import { getServerSession } from "next-auth";
 import Loader from "./ui/Loader";
 import { LogOut } from "lucide-react";
 

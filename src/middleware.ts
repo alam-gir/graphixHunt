@@ -9,6 +9,10 @@ export const middleware = async (req: NextRequest) => {
   });
 
   // if home page without token redirect to the login page
+  if (!token) {
+    console.log("no token");
+    return NextResponse.redirect("/tokenNotFound!");
+  }
   if (req.nextUrl.pathname === "/") {
     if (!token) return NextResponse.redirect(`${req.nextUrl.origin}/sign-in`);
   }

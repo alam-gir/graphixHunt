@@ -15,11 +15,13 @@ import {
 import { Input } from "@/components/ui/input";
 import Loader from "./ui/Loader";
 import { useRouter } from "next/navigation";
+import { apiBaseUrl } from "next-auth/client/_utils";
+import { useSession } from "next-auth/react";
 
 const formSchema = z.object({
   name: z
     .string()
-    .min(1, { message: "Name required minimum length of 5." })
+    .min(3, { message: "Name required minimum length of 3." })
     .max(20, { message: "Name max length of 20." }),
 });
 
@@ -29,8 +31,8 @@ const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
   //loading state
   const [isLoading, setLoading] = useState<boolean>(false);
 
-  //router for navigate after signin
-  const router = useRouter();
+  // getsession for data set with author name
+  const { data } = useSession();
 
   // defining form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,22 +44,38 @@ const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
 
   //defining submit handler
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    // try {
-    //   //start loading
-    //   setLoading(true);
-    //   if (!signinRes?.error) {
-    //     toast.success("Alhamdulillah.Logged in successfully!.");
-    //     // replace sign-in link to home
-    //     router.replace("/");
-    //   }
-    //   if (signinRes?.error === "404" || signinRes?.error === "401")
-    //     toast.error("Failed to login.Enter valid email and password.");
-    // } catch (error) {
-    //   toast.error("Failed to login, Maybe server error! please try again.");
-    // } finally {
-    //   // stop loading
-    //   setLoading(false);
-    // }
+    const modifiedValues = {
+      ...values,
+      author: data?.user.name,
+    };
+    try {
+      //start loading
+      setLoading(true);
+
+      // send data to server
+      const res = await fetch("http://localhost:3000/api/crud", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(modifiedValues),
+      });
+      console.log({ res });
+      // if success
+      // if failed
+      //   if (!signinRes?.error) {
+      //     toast.success("Alhamdulillah.Logged in successfully!.");
+      //     // replace sign-in link to home
+      //     router.replace("/");
+      //   }
+      //   if (signinRes?.error === "404" || signinRes?.error === "401")
+      //     toast.error("Failed to login.Enter valid email and password.");
+      // } catch (error) {
+      //   toast.error("Failed to login, Maybe server error! please try again.");
+    } finally {
+      // stop loading
+      setLoading(false);
+    }
   };
 
   return (

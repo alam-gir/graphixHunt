@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/context/AuthProvider";
+import StatesProvider from "@/context/StatesProvider";
 import "@/styles/globals.css";
 import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
@@ -25,8 +26,10 @@ export default async function RootLayout({
         {/* toaster  */}
         <Toaster position="bottom-right" reverseOrder={false} />
         <AuthProvider>
-          <Navbar />
-          {children}
+          <StatesProvider>
+            <Navbar />
+            {children}
+          </StatesProvider>
         </AuthProvider>
       </body>
     </html>

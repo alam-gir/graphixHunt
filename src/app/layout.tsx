@@ -1,8 +1,6 @@
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/context/AuthProvider";
-import { authOptions } from "@/lib/auth";
 import "@/styles/globals.css";
-import { getServerSession } from "next-auth";
 import { Poppins } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 

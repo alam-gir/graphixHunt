@@ -21,4 +21,28 @@ const navList = [
   },
 ];
 
-export { navList };
+const services = [
+  {
+    id: 1,
+    name: "email service",
+    archived: false,
+    featured: true,
+    date: "12-12-2023",
+  },
+  {
+    id: 2,
+    name: "graphics service",
+    archived: false,
+    featured: true,
+    date: "12-12-2023",
+  },
+  {
+    id: 3,
+    name: "other service",
+    archived: true,
+    featured: true,
+    date: "12-12-2023",
+  },
+];
+
+export { navList, services };

@@ -45,4 +45,28 @@ const services = [
   },
 ];
 
-export { navList, services };
+const fakeServices = [
+  {
+    id: 1,
+    name: "Home",
+    author: "Alamgir",
+    createdAt: "12-12-2023",
+    updatedAtd: "12-12-2023",
+  },
+  {
+    id: 2,
+    name: "Graphics",
+    author: "Alamgir",
+    createdAt: "12-12-2023",
+    updatedAtd: "12-12-2023",
+  },
+  {
+    id: 3,
+    name: "Email",
+    author: "Alamgir",
+    createdAt: "12-12-2023",
+    updatedAtd: "12-12-2023",
+  },
+];
+
+export { navList, services, fakeServices };

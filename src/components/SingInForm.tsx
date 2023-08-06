@@ -55,7 +55,6 @@ const SingInForm: FC<SingInFormProps> = ({}) => {
       setLoading(true);
 
       const signinRes = await signInWithCredentials(values);
-      console.log({ signinRes });
       if (!signinRes?.error) {
         toast.success("Alhamdulillah.Logged in successfully!.");
 

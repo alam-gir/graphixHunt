@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Loader from "./ui/Loader";
-import { useRouter } from "next/navigation";
-import { apiBaseUrl } from "next-auth/client/_utils";
 import { useSession } from "next-auth/react";
+import { useStatesContext } from "@/context/StatesProvider";
+import { createService } from "@/lib/fetch";
+import { API_LINK_SERVICES } from "@/lib/links";
 
 const formSchema = z.object({
   name: z
@@ -28,6 +29,8 @@ const formSchema = z.object({
 interface AddServiceFormProps {}
 
 const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
+  // get serviceStatus for refetching on success
+  const { setServicesFetchStatus, setOpenCreateService } = useStatesContext();
   //loading state
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -48,30 +51,18 @@ const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
       ...values,
       author: data?.user.name,
     };
+    const APIUrlservice = API_LINK_SERVICES;
     try {
       //start loading
       setLoading(true);
 
-      // send data to server
-      const res = await fetch("http://localhost:3000/api/crud", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(modifiedValues),
+      //create service
+      createService(APIUrlservice, modifiedValues).then((response) => {
+        // change service status for refetch
+        setServicesFetchStatus((prev) => !prev);
+        // change status of isopenCreate service for closing form on success
+        setOpenCreateService(false);
       });
-      console.log({ res });
-      // if success
-      // if failed
-      //   if (!signinRes?.error) {
-      //     toast.success("Alhamdulillah.Logged in successfully!.");
-      //     // replace sign-in link to home
-      //     router.replace("/");
-      //   }
-      //   if (signinRes?.error === "404" || signinRes?.error === "401")
-      //     toast.error("Failed to login.Enter valid email and password.");
-      // } catch (error) {
-      //   toast.error("Failed to login, Maybe server error! please try again.");
     } finally {
       // stop loading
       setLoading(false);

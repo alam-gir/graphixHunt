@@ -22,7 +22,7 @@ const servicesApiURL = API_LINK_SERVICES;
 const ServicesTable: FC<ServicesTableProps> = ({}) => {
   const { servicesFetchStatus } = useStatesContext();
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [services, setServices] = useState<Services | null>(null);
+  const [services, setServices] = useState<Services[] | null>(null);
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {

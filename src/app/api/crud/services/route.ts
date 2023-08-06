@@ -15,19 +15,16 @@ export const PUT = async (req: NextRequest) => {
       },
     });
 
-    console.log({ serviceCreated });
-
     return new Response("success", { status: 201 });
   } catch (error: any) {
     return new Response("error", { status: 500 });
   }
 };
-export const GET = async (res: NextResponse) => {
+export const GET = async (req: NextRequest, res: NextResponse) => {
   try {
     // get services from db
     const services = await db.services.findMany();
 
-    console.log(services);
     // return all services
     return new Response(JSON.stringify(services), { status: 200 });
   } catch (error) {

@@ -17,7 +17,6 @@ import Loader from "./ui/Loader";
 import { useSession } from "next-auth/react";
 import { useStatesContext } from "@/context/StatesProvider";
 import { createService } from "@/lib/fetch";
-import { API_LINK_SERVICES } from "@/lib/links";
 
 const formSchema = z.object({
   name: z
@@ -51,7 +50,7 @@ const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
       ...values,
       author: data?.user.name,
     };
-    const APIUrlservice = API_LINK_SERVICES;
+    const APIUrlservice = `${window.origin}/api/crud/services`;
     try {
       //start loading
       setLoading(true);

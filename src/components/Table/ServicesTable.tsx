@@ -9,7 +9,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import PopupOptions from "../PopupOptions";
-import { API_LINK_SERVICES } from "@/lib/links";
 import { Services } from "@prisma/client";
 import { useStatesContext } from "@/context/StatesProvider";
 import { fetchServices } from "@/lib/fetch";
@@ -17,7 +16,7 @@ import { fetchServices } from "@/lib/fetch";
 interface ServicesTableProps {}
 
 //servicesApiUrl
-const servicesApiURL = API_LINK_SERVICES;
+const servicesApiURL = `${window.origin}/api/crud/services`;
 
 const ServicesTable: FC<ServicesTableProps> = ({}) => {
   const { servicesFetchStatus } = useStatesContext();

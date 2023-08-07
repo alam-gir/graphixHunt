@@ -29,7 +29,7 @@ const ServicesTable: FC<ServicesTableProps> = ({}) => {
       .then((data) => {
         setServices(data);
       })
-      .catch((error) => setError(true))
+      .catch(() => setError(true))
       .finally(() => setLoading(false));
   }, [servicesFetchStatus]);
 

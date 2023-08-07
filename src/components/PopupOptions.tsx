@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
-import { deleteService } from "@/lib/fetch";
+import { deleteService, getServicebyID } from "@/lib/fetch";
 import { useStatesContext } from "@/context/StatesProvider";
 
 interface PopupOptionsProps {
@@ -16,7 +16,8 @@ interface PopupOptionsProps {
 }
 
 const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
-  const { setServicesFetchStatus } = useStatesContext();
+  const { setServicesFetchStatus, setOpenUpdateService, setSelectedService } =
+    useStatesContext();
   const APIUrl = `${window.origin}/api/crud/services`;
   return (
     <div>
@@ -28,10 +29,20 @@ const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
           <DropdownMenuLabel>Options</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Copy service ID</DropdownMenuItem>
-          <DropdownMenuItem>Update</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => {
+              // get current service
+              getServicebyID(id)
+                .then((response) => response.json())
+                .then((data) => setSelectedService(data))
+                .then(() => setOpenUpdateService(true)); // open service form
+            }}
+          >
+            Update
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              deleteService(id, APIUrl).then((response) =>
+              deleteService(id, APIUrl).then(() =>
                 setServicesFetchStatus((prev) => !prev)
               )
             }

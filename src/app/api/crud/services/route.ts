@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 import { Services } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
-export const PUT = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   try {
     // get data from req
     const serviceData: Services = await req.json();

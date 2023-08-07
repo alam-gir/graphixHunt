@@ -7,11 +7,18 @@ import {
   useContext,
   useState,
 } from "react";
+import { Services } from "@prisma/client";
 
 //types of context values
 interface StatesContextTypes {
+  selectedService: Services | null;
+  setSelectedService: Dispatch<SetStateAction<number>>;
+
   isOpenCreateService: boolean;
   setOpenCreateService: Dispatch<SetStateAction<boolean>>;
+
+  isOpenUpdateService: boolean;
+  setOpenUpdateService: Dispatch<SetStateAction<boolean>>;
 
   isOpenAlertDialog: boolean;
   setOpenAlertDialog: Dispatch<SetStateAction<boolean>>;
@@ -22,8 +29,14 @@ interface StatesContextTypes {
 
 // default value for context
 const defaultValues: StatesContextTypes = {
+  selectedService: null,
+  setSelectedService: (): number | null => null,
+
   isOpenCreateService: false,
   setOpenCreateService: (): boolean => false,
+
+  isOpenUpdateService: false,
+  setOpenUpdateService: (): boolean => false,
 
   isOpenAlertDialog: false,
   setOpenAlertDialog: (): boolean => false,
@@ -44,14 +57,20 @@ interface StatesProviderProps {
 const StatesProvider: FC<StatesProviderProps> = ({ children }) => {
   // values states
   const [isOpenCreateService, setOpenCreateService] = useState<boolean>(false);
+  const [isOpenUpdateService, setOpenUpdateService] = useState<boolean>(false);
   const [isOpenAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const [servicesFetchStatus, setServicesFetchStatus] =
     useState<boolean>(false);
+  const [selectedService, setSelectedService] = useState<null>(null);
 
   //values for pass
   const values = {
+    selectedService,
+    setSelectedService,
     isOpenCreateService,
     setOpenCreateService,
+    isOpenUpdateService,
+    setOpenUpdateService,
     isOpenAlertDialog,
     setOpenAlertDialog,
     servicesFetchStatus,

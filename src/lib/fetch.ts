@@ -1,11 +1,10 @@
 import { Services } from "@prisma/client";
-import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-hot-toast";
 
 // create service
-export const createService = async (apiURL: string, data: any) => {
-  const response = await fetch(apiURL, {
-    method: "PUT",
+export const createService = async (data: any, onFinish: () => void) => {
+  const response = await fetch(`http://localhost:3000/api/crud/services`, {
+    method: "POST",
     headers: {
       "Content-type": "application/json",
     },
@@ -17,12 +16,53 @@ export const createService = async (apiURL: string, data: any) => {
     // toast appear on success
     toast.success("Alhamdulillah. New service Created successfully!");
   }
+
+  // onFinish run
+  onFinish();
+};
+
+// update service
+export const updateService = async (
+  data: any,
+  prevService: Services,
+  onSuccess: () => void
+) => {
+  const response = await fetch(
+    `http://localhost:3000/api/crud/services/${prevService.id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ data, id: prevService.id }),
+    }
+  );
+
+  // if success
+  if (response.ok) {
+    // toast appear on success
+    toast.success("Alhamdulillah. Service updated successfully!");
+    // onFinish run
+    onSuccess();
+  }
 };
 
 // fething services all
 export const fetchServices = async (url: string) => {
   try {
     const response = await fetch(url);
+    return response;
+  } catch (error) {
+    throw new Error("services fetching error");
+  }
+};
+
+// fething single service
+export const getServicebyID = async (id: number) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/crud/services/${id}`
+    );
     return response;
   } catch (error) {
     throw new Error("services fetching error");

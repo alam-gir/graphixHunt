@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import Loader from "./ui/Loader";
 import { useSession } from "next-auth/react";
 import { useStatesContext } from "@/context/StatesProvider";
-import { createService } from "@/lib/fetch";
 
 const formSchema = z.object({
   name: z
@@ -25,9 +24,15 @@ const formSchema = z.object({
     .max(20, { message: "Name max length of 20." }),
 });
 
-interface AddServiceFormProps {}
+interface ServiceFormProps {
+  previousValue?: { name: string };
+  submitHandler: (data: any) => Promise<void>;
+}
 
-const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
+const ServiceForm: FC<ServiceFormProps> = ({
+  previousValue,
+  submitHandler,
+}) => {
   // get serviceStatus for refetching on success
   const { setServicesFetchStatus, setOpenCreateService } = useStatesContext();
   //loading state
@@ -39,9 +44,11 @@ const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
   // defining form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-    },
+    defaultValues: previousValue
+      ? previousValue
+      : {
+          name: "",
+        },
   });
 
   //defining submit handler
@@ -50,18 +57,13 @@ const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
       ...values,
       author: data?.user.name,
     };
-    const APIUrlservice = `${window.origin}/api/crud/services`;
+
     try {
       //start loading
       setLoading(true);
 
-      //create service
-      createService(APIUrlservice, modifiedValues).then((response) => {
-        // change service status for refetch
-        setServicesFetchStatus((prev) => !prev);
-        // change status of isopenCreate service for closing form on success
-        setOpenCreateService(false);
-      });
+      //create service then close the form
+      submitHandler(modifiedValues).then(() => setOpenCreateService(false));
     } finally {
       // stop loading
       setLoading(false);
@@ -102,4 +104,4 @@ const AddServiceForm: FC<AddServiceFormProps> = ({}) => {
   );
 };
 
-export default AddServiceForm;
+export default ServiceForm;

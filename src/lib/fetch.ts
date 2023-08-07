@@ -30,9 +30,8 @@ export const fetchServices = async (url: string) => {
 };
 
 // Delete service
-export const deleteService = async (id: number) => {
-  const queryURL = `http://localhost:3000/api/crud/services`;
-  const response = await fetch(queryURL, {
+export const deleteService = async (id: number, APIUrl: string) => {
+  const response = await fetch(APIUrl, {
     method: "DELETE",
     headers: {
       "Content-type": "application/json",

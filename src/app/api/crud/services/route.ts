@@ -31,13 +31,3 @@ export const GET = async (req: NextRequest, res: NextResponse) => {
     return new Response("error", { status: 500 });
   }
 };
-
-export const DELETE = async (req: NextRequest) => {
-  try {
-    const id = await req.json();
-    const deletdService = await db.services.delete({ where: { id } });
-    return new Response("ok", { status: 200 });
-  } catch (error: any) {
-    return new Response("error", { status: 500 });
-  }
-};

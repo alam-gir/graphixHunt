@@ -18,7 +18,6 @@ interface PopupOptionsProps {
 const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
   const { setServicesFetchStatus, setOpenUpdateService, setSelectedService } =
     useStatesContext();
-  const APIUrl = `${window.origin}/api/crud/services`;
   return (
     <div>
       <DropdownMenu>
@@ -42,7 +41,7 @@ const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              deleteService(id, APIUrl).then(() =>
+              deleteService(id).then(() =>
                 setServicesFetchStatus((prev) => !prev)
               )
             }

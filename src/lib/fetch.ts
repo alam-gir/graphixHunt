@@ -69,13 +69,9 @@ export const getServicebyID = async (id: number) => {
 };
 
 // Delete service
-export const deleteService = async (id: number, APIUrl: string) => {
-  const response = await fetch(APIUrl, {
+export const deleteService = async (id: number) => {
+  const response = await fetch(`${getURL("/api/crud/services")}/${id}`, {
     method: "DELETE",
-    headers: {
-      "Content-type": "application/json",
-    },
-    body: JSON.stringify(id),
   });
 
   if (response.ok) {

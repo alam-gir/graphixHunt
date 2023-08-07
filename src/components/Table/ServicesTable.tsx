@@ -12,11 +12,9 @@ import PopupOptions from "../PopupOptions";
 import { Services } from "@prisma/client";
 import { useStatesContext } from "@/context/StatesProvider";
 import { fetchServices } from "@/lib/fetch";
+import { useRouter } from "next/navigation";
 
 interface ServicesTableProps {}
-
-//servicesApiUrl
-const servicesApiURL = `${window.origin}/api/crud/services`;
 
 const ServicesTable: FC<ServicesTableProps> = ({}) => {
   const { servicesFetchStatus } = useStatesContext();
@@ -25,6 +23,8 @@ const ServicesTable: FC<ServicesTableProps> = ({}) => {
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
+    // userouter for get origin
+    const servicesApiURL = `${window.origin}/api/crud/services`;
     fetchServices(servicesApiURL)
       .then((response) => response.json())
       .then((data) => {

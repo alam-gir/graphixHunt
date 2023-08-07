@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import { AuthProvider } from "@/context/AuthProvider";
+import NavbarProvider from "@/context/NavbarProvider";
 import StatesProvider from "@/context/StatesProvider";
 import "@/styles/globals.css";
 import { Poppins } from "next/font/google";
@@ -27,8 +28,7 @@ export default async function RootLayout({
         <Toaster position="bottom-right" reverseOrder={false} />
         <AuthProvider>
           <StatesProvider>
-            <Navbar />
-            {children}
+            <NavbarProvider>{children}</NavbarProvider>
           </StatesProvider>
         </AuthProvider>
       </body>

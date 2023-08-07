@@ -12,7 +12,7 @@ import { Services } from "@prisma/client";
 //types of context values
 interface StatesContextTypes {
   selectedService: Services | null;
-  setSelectedService: Dispatch<SetStateAction<number>>;
+  setSelectedService: Dispatch<SetStateAction<Services | null>>;
 
   isOpenCreateService: boolean;
   setOpenCreateService: Dispatch<SetStateAction<boolean>>;
@@ -30,7 +30,7 @@ interface StatesContextTypes {
 // default value for context
 const defaultValues: StatesContextTypes = {
   selectedService: null,
-  setSelectedService: (): number | null => null,
+  setSelectedService: (): Services | null => null,
 
   isOpenCreateService: false,
   setOpenCreateService: (): boolean => false,
@@ -61,7 +61,7 @@ const StatesProvider: FC<StatesProviderProps> = ({ children }) => {
   const [isOpenAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
   const [servicesFetchStatus, setServicesFetchStatus] =
     useState<boolean>(false);
-  const [selectedService, setSelectedService] = useState<null>(null);
+  const [selectedService, setSelectedService] = useState<Services | null>(null);
 
   //values for pass
   const values = {

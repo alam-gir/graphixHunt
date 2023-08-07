@@ -10,6 +10,7 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { deleteService, getServicebyID } from "@/lib/fetch";
 import { useStatesContext } from "@/context/StatesProvider";
+import { copyToClipboard } from "@/lib/utils";
 
 interface PopupOptionsProps {
   id: number;
@@ -27,7 +28,13 @@ const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
         <DropdownMenuContent>
           <DropdownMenuLabel>Options</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Copy service ID</DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() =>
+              copyToClipboard(id.toString(), "service ID copied to clipboard!")
+            }
+          >
+            Copy service ID
+          </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
               // get current service

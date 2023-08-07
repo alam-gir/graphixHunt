@@ -1,9 +1,10 @@
 import { Services } from "@prisma/client";
 import { toast } from "react-hot-toast";
+import { getURL } from "./getURL";
 
 // create service
 export const createService = async (data: any, onFinish: () => void) => {
-  const response = await fetch(`http://localhost:3000/api/crud/services`, {
+  const response = await fetch(`${getURL("/api/crud/services")}`, {
     method: "POST",
     headers: {
       "Content-type": "application/json",
@@ -28,7 +29,7 @@ export const updateService = async (
   onSuccess: () => void
 ) => {
   const response = await fetch(
-    `http://localhost:3000/api/crud/services/${prevService.id}`,
+    `${getURL("/api/crud/services")}/${prevService.id}`,
     {
       method: "PUT",
       headers: {
@@ -60,9 +61,7 @@ export const fetchServices = async (url: string) => {
 // fething single service
 export const getServicebyID = async (id: number) => {
   try {
-    const response = await fetch(
-      `http://localhost:3000/api/crud/services/${id}`
-    );
+    const response = await fetch(`${getURL("/api/crud/services")}/${id}`);
     return response;
   } catch (error) {
     throw new Error("services fetching error");

@@ -12,7 +12,6 @@ import PopupOptions from "../PopupOptions";
 import { Services } from "@prisma/client";
 import { useStatesContext } from "@/context/StatesProvider";
 import { fetchServices } from "@/lib/fetch";
-import { useRouter } from "next/navigation";
 
 interface ServicesTableProps {}
 

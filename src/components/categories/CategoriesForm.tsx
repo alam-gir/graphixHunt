@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, use, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -31,8 +31,11 @@ import { CheckedState } from "@radix-ui/react-checkbox";
 import { Textarea } from "../ui/textarea";
 import { fetchServices } from "@/lib/fetch";
 import { Services } from "@prisma/client";
+import { ImagePlusIcon, UploadCloudIcon, UploadIcon } from "lucide-react";
+import ShowIcon from "./ShowIcon";
 
 const formSchema = z.object({
+  icon: z.string(),
   name: z
     .string()
     .min(3, { message: "Name required minimum length of 3." })
@@ -65,21 +68,23 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
   //loading state
   const [isLoading, setLoading] = useState<boolean>(false);
 
+  const fileRef = useRef<HTMLInputElement | null>(null);
+
   // getsession for data set with author name
   const { data } = useSession();
+  // current icon
+  const [icon, setIcon] = useState<File>();
 
   // defining form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: previousValue
-      ? previousValue
-      : {
-          name: "",
-          type: ",",
-          archived: false,
-          featured: true,
-          description: "",
-        },
+    defaultValues: {
+      name: "",
+      type: ",",
+      archived: false,
+      featured: true,
+      description: "",
+    },
   });
 
   //defining submit handler
@@ -100,9 +105,11 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
       setLoading(false);
     }
   };
-  fetchServices()
-    .then((response) => response.json())
-    .then((data) => setServices(data));
+  useEffect(() => {
+    fetchServices()
+      .then((response) => response.json())
+      .then((data) => setServices(data));
+  }, []);
 
   // select items by services
   const selectItems = services?.map((service, index) => {
@@ -117,6 +124,51 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-4">
+        {/* icon formField  */}
+        <FormField
+          control={form.control}
+          name="icon"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Icon</FormLabel>
+              <FormControl>
+                <div className="flex">
+                  {/* hidden for design specific upload button */}
+                  <div>
+                    <Input
+                      className="hidden"
+                      type="file"
+                      accept="image/*"
+                      placeholder="Upload Icon"
+                      {...field}
+                      onChange={(event) =>
+                        setIcon(() => {
+                          const target = event.currentTarget.files;
+                          if (target) {
+                            return target[0];
+                          }
+                        })
+                      }
+                      ref={fileRef}
+                    />
+                    {/* upload button design  */}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => fileRef.current?.click()}
+                    >
+                      <ImagePlusIcon className="p-1" /> Upload Icon
+                    </Button>
+                  </div>
+                  <div className="px-16">
+                    <ShowIcon iconFile={icon} />
+                  </div>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         {/* Service name input field  */}
         <FormField
           control={form.control}

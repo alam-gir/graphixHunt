@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, type FC, type ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 interface CategoriesFormModalProps {

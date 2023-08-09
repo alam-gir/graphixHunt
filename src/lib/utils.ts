@@ -9,3 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 export const copyToClipboard = (content: string, message: string) => {
   navigator.clipboard.writeText(content).then(() => toast.success(message));
 };
+
+export const getFilesFromInput = (files: FileList | null) => {
+  console.log(files);
+};

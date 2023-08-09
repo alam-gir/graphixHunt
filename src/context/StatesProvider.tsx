@@ -20,6 +20,12 @@ interface StatesContextTypes {
   isOpenUpdateService: boolean;
   setOpenUpdateService: Dispatch<SetStateAction<boolean>>;
 
+  isOpenCategories: boolean;
+  setOpenCategories: Dispatch<SetStateAction<boolean>>;
+
+  isOpenUpdateCategories: boolean;
+  setOpenUpdateCategories: Dispatch<SetStateAction<boolean>>;
+
   isOpenAlertDialog: boolean;
   setOpenAlertDialog: Dispatch<SetStateAction<boolean>>;
 
@@ -37,6 +43,12 @@ const defaultValues: StatesContextTypes = {
 
   isOpenUpdateService: false,
   setOpenUpdateService: (): boolean => false,
+
+  isOpenCategories: false,
+  setOpenCategories: (): boolean => false,
+
+  isOpenUpdateCategories: false,
+  setOpenUpdateCategories: (): boolean => false,
 
   isOpenAlertDialog: false,
   setOpenAlertDialog: (): boolean => false,
@@ -58,7 +70,13 @@ const StatesProvider: FC<StatesProviderProps> = ({ children }) => {
   // values states
   const [isOpenCreateService, setOpenCreateService] = useState<boolean>(false);
   const [isOpenUpdateService, setOpenUpdateService] = useState<boolean>(false);
+
+  const [isOpenCategories, setOpenCategories] = useState<boolean>(false);
+  const [isOpenUpdateCategories, setOpenUpdateCategories] =
+    useState<boolean>(false);
+
   const [isOpenAlertDialog, setOpenAlertDialog] = useState<boolean>(false);
+
   const [servicesFetchStatus, setServicesFetchStatus] =
     useState<boolean>(false);
   const [selectedService, setSelectedService] = useState<Services | null>(null);
@@ -67,12 +85,22 @@ const StatesProvider: FC<StatesProviderProps> = ({ children }) => {
   const values = {
     selectedService,
     setSelectedService,
+
     isOpenCreateService,
     setOpenCreateService,
+
     isOpenUpdateService,
     setOpenUpdateService,
+
+    isOpenCategories,
+    setOpenCategories,
+
+    isOpenUpdateCategories,
+    setOpenUpdateCategories,
+
     isOpenAlertDialog,
     setOpenAlertDialog,
+
     servicesFetchStatus,
     setServicesFetchStatus,
   };

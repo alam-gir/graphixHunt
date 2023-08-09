@@ -12,6 +12,7 @@ import PopupOptions from "../PopupOptions";
 import { Services } from "@prisma/client";
 import { useStatesContext } from "@/context/StatesProvider";
 import { fetchServices } from "@/lib/fetch";
+import Loader from "../ui/Loader";
 
 interface ServicesTableProps {}
 
@@ -22,9 +23,7 @@ const ServicesTable: FC<ServicesTableProps> = ({}) => {
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-    // userouter for get origin
-    const servicesApiURL = `${window.origin}/api/crud/services`;
-    fetchServices(servicesApiURL)
+    fetchServices()
       .then((response) => response.json())
       .then((data) => {
         setServices(data);
@@ -36,11 +35,18 @@ const ServicesTable: FC<ServicesTableProps> = ({}) => {
   // return if error!
   if (error)
     return (
-      <div>something went wrong. Please check your internet connection.</div>
+      <div className=" w-full text-center">
+        something went wrong. Please check your internet connection.
+      </div>
     );
 
   // return if fetching
-  if (isLoading) return <div>loading.........</div>;
+  if (isLoading)
+    return (
+      <div className="w-full h-36 flex items-center justify-center">
+        <Loader color="fill-gray-600" />
+      </div>
+    );
 
   // return if data is loaded
   return (

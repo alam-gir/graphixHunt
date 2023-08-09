@@ -59,9 +59,9 @@ const ServiceForm: FC<ServiceFormProps> = ({
     };
 
     try {
-      //start loading
+      // start Loading
       setLoading(true);
-
+      console.log(isLoading);
       //create service then close the form
       submitHandler(modifiedValues).then(() => setOpenCreateService(false));
     } finally {
@@ -70,6 +70,7 @@ const ServiceForm: FC<ServiceFormProps> = ({
     }
   };
 
+  console.log({ isLoading });
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-4">

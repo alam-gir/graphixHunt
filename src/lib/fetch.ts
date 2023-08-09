@@ -49,7 +49,8 @@ export const updateService = async (
 };
 
 // fething services all
-export const fetchServices = async (url: string) => {
+export const fetchServices = async () => {
+  const url = getURL("/api/crud/services");
   try {
     const response = await fetch(url);
     return response;

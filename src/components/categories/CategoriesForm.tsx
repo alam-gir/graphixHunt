@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, use, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, use, useEffect, useRef, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -29,18 +29,20 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { Textarea } from "../ui/textarea";
-import { fetchServices } from "@/lib/fetch";
+import { POSTFetchToOrigin, fetchGET, fetchServices } from "@/lib/fetch";
 import { Services } from "@prisma/client";
-import { ImagePlusIcon, UploadCloudIcon, UploadIcon } from "lucide-react";
+import { ImagePlusIcon } from "lucide-react";
 import ShowIcon from "./ShowIcon";
+import { readFileAsURL } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
-  icon: z.string(),
+  iconFile: z.string().optional(),
   name: z
     .string()
     .min(3, { message: "Name required minimum length of 3." })
     .max(20, { message: "Name max length of 20." }),
-  type: z.string(),
+  type: z.string().min(2, { message: "Service type must required." }),
   archived: z.boolean().default(false),
   featured: z.boolean().default(true),
   description: z
@@ -61,8 +63,6 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
   previousValue,
   submitHandler,
 }) => {
-  // get serviceStatus for refetching on success
-  const { setServicesFetchStatus, setOpenCreateService } = useStatesContext();
   // services state
   const [services, setServices] = useState<Services[] | null>(null);
   //loading state
@@ -74,11 +74,17 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
   const { data } = useSession();
   // current icon
   const [icon, setIcon] = useState<File>();
+  // for store fileDataURL
+  const [iconDataURL, setIconDataURL] = useState<string | undefined>(undefined);
+
+  //router for gor back and close form modal
+  const router = useRouter();
 
   // defining form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      iconFile: "",
       name: "",
       type: ",",
       archived: false,
@@ -89,24 +95,35 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
 
   //defining submit handler
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // start Loading
+    setLoading(true);
     const modifiedValues = {
       ...values,
+      iconFile: iconDataURL,
       author: data?.user.name,
     };
 
     try {
-      // start Loading
-      setLoading(true);
-      //create service then close the form
-      // submitHandler(modifiedValues).then(() => setOpenCreateService(false));
-      console.log({ modifiedValues });
+      //create categories then close the form
+      POSTFetchToOrigin("/api/crud/categories", modifiedValues).then(
+        (response) => {
+          if (response.ok) {
+            // close form modal by go back
+            router.back();
+            // empty the form
+            form.reset();
+            setIconDataURL(undefined);
+            setIcon(undefined);
+          }
+        }
+      );
     } finally {
       // stop loading
       setLoading(false);
     }
   };
   useEffect(() => {
-    fetchServices()
+    fetchGET("/api/crud/services", "service fetched Failed!")
       .then((response) => response.json())
       .then((data) => setServices(data));
   }, []);
@@ -121,13 +138,25 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
       </>
     );
   });
+
+  // handlechange for icon file
+  const handleFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const iconFile = files[0];
+      //set file in state
+      setIcon(iconFile);
+      // convert file to dataURL and set to state
+      readFileAsURL(iconFile, setIconDataURL);
+    }
+  };
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-4">
         {/* icon formField  */}
         <FormField
           control={form.control}
-          name="icon"
+          name="iconFile"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Icon</FormLabel>
@@ -140,17 +169,10 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
                       type="file"
                       accept="image/*"
                       placeholder="Upload Icon"
-                      {...field}
-                      onChange={(event) =>
-                        setIcon(() => {
-                          const target = event.currentTarget.files;
-                          if (target) {
-                            return target[0];
-                          }
-                        })
-                      }
+                      onChange={handleFileInputChange}
                       ref={fileRef}
                     />
+
                     {/* upload button design  */}
                     <Button
                       type="button"
@@ -161,7 +183,8 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
                     </Button>
                   </div>
                   <div className="px-16">
-                    <ShowIcon iconFile={icon} />
+                    {/* icon preview  */}
+                    <ShowIcon iconDataURL={iconDataURL} />
                   </div>
                 </div>
               </FormControl>
@@ -169,6 +192,7 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
             </FormItem>
           )}
         />
+
         {/* Service name input field  */}
         <FormField
           control={form.control}
@@ -184,6 +208,7 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
             </FormItem>
           )}
         />
+
         {/* service type field  */}
         <FormField
           control={form.control}
@@ -191,10 +216,10 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Service Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
+                    <SelectValue placeholder="Select type of category" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>{selectItems}</SelectContent>
@@ -226,6 +251,7 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
             </FormItem>
           )}
         />
+
         {/* Featured or not checkbox field  */}
         <FormField
           control={form.control}
@@ -249,6 +275,7 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
             </FormItem>
           )}
         />
+
         {/* description form field  */}
         <FormField
           control={form.control}

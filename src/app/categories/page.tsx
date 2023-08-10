@@ -1,4 +1,5 @@
 import TitleBar from "@/components/TitleBar";
+import CategoriesBody from "@/components/categories/CategoriesBody";
 import CategoriesForm from "@/components/categories/CategoriesForm";
 import { CategoriesFormModal } from "@/components/categories/CategoriesFormModal";
 import { Button } from "@/components/ui/button";
@@ -19,7 +20,9 @@ const CategoriesPage: FC<CategoriesPageProps> = ({}) => {
           <CategoriesForm></CategoriesForm>
         </CategoriesFormModal>
       </div>
-      <div>here will be show all data in table</div>
+      <div className="px-16 ">
+        <CategoriesBody />
+      </div>
     </div>
   );
 };

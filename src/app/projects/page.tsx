@@ -6,7 +6,10 @@ interface pageProps {}
 const page: FC<pageProps> = ({}) => {
   return (
     <div>
-      <TitleBar title="Projects" description="manage your Projects" />
+      <div>
+        <TitleBar title="Projects" description="manage your Projects" />
+      </div>
+      <div></div>
     </div>
   );
 };

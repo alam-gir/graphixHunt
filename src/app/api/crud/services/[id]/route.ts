@@ -1,6 +1,5 @@
 import { db } from "@/lib/db";
-import { NextRequest, NextResponse } from "next/server";
-import { Services } from "@prisma/client";
+import { NextRequest } from "next/server";
 
 export const GET = async (
   req: NextRequest,
@@ -53,7 +52,7 @@ export const DELETE = async (
       where: { id: parseInt(id) },
     });
     return new Response("ok", { status: 200 });
-  } catch (error: any) {
+  } catch (error) {
     return new Response("error", { status: 500 });
   }
 };

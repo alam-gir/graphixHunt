@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { getURL } from "./getURL";
 
 // create service
-export const createService = async (data: any, onFinish: () => void) => {
+export const createService = async (data: any, onSuccess: () => void) => {
   const response = await fetch(`${getURL("/api/crud/services")}`, {
     method: "POST",
     headers: {
@@ -12,14 +12,18 @@ export const createService = async (data: any, onFinish: () => void) => {
     body: JSON.stringify(data),
   });
 
+  // if exist
+  if (response.status == 409) {
+    // toast that alreadey exist this service
+    toast.error("Service is already exist!");
+  }
   // if success
   if (response.ok) {
     // toast appear on success
     toast.success("Alhamdulillah. New service Created successfully!");
+    // onSuccess run
+    onSuccess();
   }
-
-  // onFinish run
-  onFinish();
 };
 
 // update service
@@ -49,13 +53,13 @@ export const updateService = async (
 };
 
 // fething services all
-export const fetchServices = async () => {
-  const url = getURL("/api/crud/services");
+export const fetchGET = async (path: string, errorMessage: string) => {
+  const url = getURL(path);
   try {
     const response = await fetch(url);
     return response;
   } catch (error) {
-    throw new Error("services fetching error");
+    throw new Error(errorMessage);
   }
 };
 
@@ -77,6 +81,24 @@ export const deleteService = async (id: number) => {
 
   if (response.ok) {
     toast.success("Deleted Service Successfully!");
+  }
+  return response;
+};
+
+export const POSTFetchToOrigin = async (path: string, data: any) => {
+  const url = getURL(path);
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (response.ok) {
+    toast.success("Created New Category Successfully!");
+  } else {
+    toast.error("Something went wrong! Category create failed!");
   }
   return response;
 };

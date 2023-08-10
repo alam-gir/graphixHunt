@@ -31,6 +31,9 @@ interface StatesContextTypes {
 
   servicesFetchStatus: boolean;
   setServicesFetchStatus: Dispatch<SetStateAction<boolean>>;
+
+  categoryFetchStatus: boolean;
+  setCategoryFetchStatus: Dispatch<SetStateAction<boolean>>;
 }
 
 // default value for context
@@ -55,6 +58,9 @@ const defaultValues: StatesContextTypes = {
 
   servicesFetchStatus: false,
   setServicesFetchStatus: (): boolean => false,
+
+  categoryFetchStatus: false,
+  setCategoryFetchStatus: (): boolean => false,
 };
 
 // create context
@@ -79,6 +85,10 @@ const StatesProvider: FC<StatesProviderProps> = ({ children }) => {
 
   const [servicesFetchStatus, setServicesFetchStatus] =
     useState<boolean>(false);
+
+  const [categoryFetchStatus, setCategoryFetchStatus] =
+    useState<boolean>(false);
+
   const [selectedService, setSelectedService] = useState<Services | null>(null);
 
   //values for pass
@@ -103,6 +113,9 @@ const StatesProvider: FC<StatesProviderProps> = ({ children }) => {
 
     servicesFetchStatus,
     setServicesFetchStatus,
+
+    categoryFetchStatus,
+    setCategoryFetchStatus,
   };
   return (
     <StateContext.Provider value={values}>{children}</StateContext.Provider>

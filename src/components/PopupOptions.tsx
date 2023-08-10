@@ -13,7 +13,7 @@ import { useStatesContext } from "@/context/StatesProvider";
 import { copyToClipboard } from "@/lib/utils";
 
 interface PopupOptionsProps {
-  id: number;
+  id: string;
 }
 
 const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {

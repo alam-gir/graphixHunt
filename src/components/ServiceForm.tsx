@@ -34,7 +34,7 @@ const ServiceForm: FC<ServiceFormProps> = ({
   submitHandler,
 }) => {
   // get serviceStatus for refetching on success
-  const { setServicesFetchStatus, setOpenCreateService } = useStatesContext();
+  const { setOpenCreateService } = useStatesContext();
   //loading state
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -53,15 +53,14 @@ const ServiceForm: FC<ServiceFormProps> = ({
 
   //defining submit handler
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    // start Loading
+    setLoading(true);
     const modifiedValues = {
       ...values,
       author: data?.user.name,
     };
 
     try {
-      // start Loading
-      setLoading(true);
-      console.log(isLoading);
       //create service then close the form
       submitHandler(modifiedValues).then(() => setOpenCreateService(false));
     } finally {
@@ -70,7 +69,6 @@ const ServiceForm: FC<ServiceFormProps> = ({
     }
   };
 
-  console.log({ isLoading });
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-4">

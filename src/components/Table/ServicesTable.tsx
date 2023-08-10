@@ -11,7 +11,7 @@ import {
 import PopupOptions from "../PopupOptions";
 import { Services } from "@prisma/client";
 import { useStatesContext } from "@/context/StatesProvider";
-import { fetchServices } from "@/lib/fetch";
+import { fetchGET } from "@/lib/fetch";
 import Loader from "../ui/Loader";
 
 interface ServicesTableProps {}
@@ -23,7 +23,7 @@ const ServicesTable: FC<ServicesTableProps> = ({}) => {
   const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchServices()
+    fetchGET("/api/crud/services", "service fetched Failed!")
       .then((response) => response.json())
       .then((data) => {
         setServices(data);
@@ -55,10 +55,9 @@ const ServicesTable: FC<ServicesTableProps> = ({}) => {
         <TableCaption>A list of your services.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Id</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Created by</TableHead>
-            <TableHead>Created At</TableHead>
+            <TableHead className="w-[100px]">Name</TableHead>
+            <TableHead>Author</TableHead>
+            <TableHead>Date</TableHead>
             <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
@@ -70,7 +69,6 @@ const ServicesTable: FC<ServicesTableProps> = ({}) => {
             const createdAt = new Date(service.createdAt).toLocaleDateString();
             return (
               <TableRow key={index}>
-                <TableCell className="font-medium">{id}</TableCell>
                 <TableCell>{name}</TableCell>
                 <TableCell>{author}</TableCell>
                 <TableCell>{createdAt}</TableCell>

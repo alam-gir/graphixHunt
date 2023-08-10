@@ -10,7 +10,7 @@ export const GET = async (
   try {
     // get that unique services
     const service = await db.services.findUnique({
-      where: { id: parseInt(id) },
+      where: { id: id },
     });
 
     if (service) return new Response(JSON.stringify(service), { status: 200 });
@@ -32,7 +32,7 @@ export const PUT = async (
 
     // update the data
     const updatedData = await db.services.update({
-      where: { id: parseInt(id) },
+      where: { id: id },
       data: { name: newData.name, author: newData.author },
     });
     return new Response("ok", { status: 201 });
@@ -49,7 +49,7 @@ export const DELETE = async (
   try {
     // const id = await req.json();
     const deletdService = await db.services.delete({
-      where: { id: parseInt(id) },
+      where: { id: id },
     });
     return new Response("ok", { status: 200 });
   } catch (error) {

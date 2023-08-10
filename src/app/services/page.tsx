@@ -39,10 +39,10 @@ const Page: FC<pageProps> = ({}) => {
               }
             />
           </AddDialog>
-          {/* dialog for add service  */}
+          {/* dialog for update service  */}
           <AddDialog
-            tittle="Create Service"
-            description="Create a new service for manage."
+            tittle="Update Service"
+            description="Update your existing service."
             isOpen={isOpenUpdateService}
             setOpen={setOpenUpdateService}
           >

@@ -32,16 +32,14 @@ export const updateService = async (
   prevService: Services,
   onSuccess: () => void
 ) => {
-  const response = await fetch(
-    `${getURL("/api/crud/services")}/${prevService.id}`,
-    {
-      method: "PUT",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ data, id: prevService.id }),
-    }
-  );
+  const response = await fetch(`${url}/${prevService.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify({ data, id: prevService.id }),
+  });
+  console.log(response);
 
   // if success
   if (response.ok) {
@@ -64,7 +62,7 @@ export const fetchGET = async (path: string, errorMessage: string) => {
 };
 
 // fething single service
-export const getServicebyID = async (id: number) => {
+export const getServicebyID = async (id: string) => {
   try {
     const response = await fetch(`${getURL("/api/crud/services")}/${id}`);
     return response;
@@ -74,7 +72,7 @@ export const getServicebyID = async (id: number) => {
 };
 
 // Delete service
-export const deleteService = async (id: number) => {
+export const deleteService = async (id: string) => {
   const response = await fetch(`${getURL("/api/crud/services")}/${id}`, {
     method: "DELETE",
   });

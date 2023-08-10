@@ -32,7 +32,7 @@ const AddDialog: FC<AddDialogProps> = ({
           {triggerText}
         </DialogTrigger>
       )}
-      <DialogContent className="bg-green-400">
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{tittle}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

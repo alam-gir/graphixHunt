@@ -7,10 +7,13 @@ import { fetchGET } from "@/lib/fetch";
 import { useStatesContext } from "@/context/StatesProvider";
 import { changeSkip } from "@/lib/utils";
 import { PaginationOpt } from "@/types/types";
+import Loader from "../ui/Loader";
 
 interface CategoriesBodyProps {}
 
 const CategoriesBody: FC<CategoriesBodyProps> = ({}) => {
+  const [isLoading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const { categoryFetchStatus } = useStatesContext();
   const [categories, setCategories] = useState<Categories[]>();
   const [categoriesLength, setCategoriesLength] = useState<number>();
@@ -20,6 +23,8 @@ const CategoriesBody: FC<CategoriesBodyProps> = ({}) => {
   });
 
   useEffect(() => {
+    // start loading
+    setLoading(true);
     fetchGET(
       `/api/crud/categories/?skip=${paginationOpt?.skip}&take=${paginationOpt?.take}`,
       "Categories fetched failed!"
@@ -28,8 +33,28 @@ const CategoriesBody: FC<CategoriesBodyProps> = ({}) => {
       .then((data) => {
         setCategories(data.categories);
         setCategoriesLength(data.totalDataLength);
-      });
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
   }, [paginationOpt, categoryFetchStatus]);
+
+  // return if error!
+  if (error)
+    return (
+      <div className=" w-full text-center">
+        something went wrong. Please check your internet connection.
+      </div>
+    );
+
+  // return if fetching
+  if (isLoading)
+    return (
+      <div className="w-full h-36 flex items-center justify-center">
+        <Loader color="fill-gray-600" />
+      </div>
+    );
+
+  // return if data is loaded
   return (
     <div>
       <div className=" min-h-[39rem]">

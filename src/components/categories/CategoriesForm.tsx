@@ -76,6 +76,8 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
   const [icon, setIcon] = useState<File>();
   // for store fileDataURL
   const [iconDataURL, setIconDataURL] = useState<string | undefined>(undefined);
+  // use context for set refetchCategories
+  const { setCategoryFetchStatus } = useStatesContext();
 
   //router for gor back and close form modal
   const router = useRouter();
@@ -108,6 +110,8 @@ const CategoriesForm: FC<CategoriesFormProps> = ({
       POSTFetchToOrigin("/api/crud/categories", modifiedValues).then(
         (response) => {
           if (response.ok) {
+            //refetch categories
+            setCategoryFetchStatus((prev) => !prev);
             // close form modal by go back
             router.back();
             // empty the form

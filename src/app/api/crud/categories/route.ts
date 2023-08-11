@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { uploadImageDataURLToCloudinary } from "@/lib/uloadDataImageUrlToCloudinary";
+import { uploadFileToCloudinary } from "@/lib/cloudinary";
 import { NextRequest } from "next/server";
 
 export const GET = async (req: NextRequest) => {
@@ -51,6 +51,7 @@ export const GET = async (req: NextRequest) => {
       return new Response(JSON.stringify(categories), { status: 200 });
     } else return new Response("categories not found!", { status: 404 });
   } catch (error) {
+    console.log(error);
     return new Response(JSON.stringify(error), { status: 404 });
   }
 };
@@ -59,7 +60,7 @@ export const POST = async (req: NextRequest) => {
   const { iconFile, ...data } = await req.json();
   try {
     //connect with coudinary & upload icon file in cloudinary
-    const iconDataCloudinay = await uploadImageDataURLToCloudinary(
+    const iconDataCloudinay = await uploadFileToCloudinary(
       iconFile,
       "graphixHunt/service_icon"
     );

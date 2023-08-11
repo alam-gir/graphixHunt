@@ -6,18 +6,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { MoreHorizontal } from "lucide-react";
 import { fetchDELETE, getServicebyID } from "@/lib/fetch";
 import { useStatesContext } from "@/context/StatesProvider";
 import { copyToClipboard } from "@/lib/utils";
 
-interface PopupOptionsProps {
+interface CategoriesPopupOptionsProps {
   id: string;
 }
 
-const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
-  const { setServicesFetchStatus, setOpenUpdateService, setSelectedService } =
+const CategoriesPopupOptions: FC<CategoriesPopupOptionsProps> = ({ id }) => {
+  const { setCategoryFetchStatus, setOpenUpdateService, setSelectedService } =
     useStatesContext();
   return (
     <div>
@@ -30,10 +30,13 @@ const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
           <DropdownMenuSeparator />
           <DropdownMenuItem
             onClick={() =>
-              copyToClipboard(id.toString(), "service ID copied to clipboard!")
+              copyToClipboard(
+                id.toString(),
+                "Categories ID copied to clipboard!"
+              )
             }
           >
-            Copy service ID
+            Copy Categories ID
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() => {
@@ -48,8 +51,8 @@ const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={() =>
-              fetchDELETE(id, "/api/crud/services").then(() =>
-                setServicesFetchStatus((prev) => !prev)
+              fetchDELETE(id, "/api/crud/categories").then(() =>
+                setCategoryFetchStatus((prev) => !prev)
               )
             }
           >
@@ -61,4 +64,4 @@ const PopupOptions: FC<PopupOptionsProps> = ({ id }) => {
   );
 };
 
-export default PopupOptions;
+export default CategoriesPopupOptions;

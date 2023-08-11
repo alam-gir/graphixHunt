@@ -26,6 +26,17 @@ export const createService = async (data: any, onSuccess: () => void) => {
   }
 };
 
+// fething services all
+export const fetchGET = async (path: string, errorMessage: string) => {
+  const url = getURL(path);
+  try {
+    const response = await fetch(url);
+    return response;
+  } catch (error) {
+    throw new Error(errorMessage);
+  }
+};
+
 // update service
 export const updateService = async (
   data: any,
@@ -50,17 +61,6 @@ export const updateService = async (
   }
 };
 
-// fething services all
-export const fetchGET = async (path: string, errorMessage: string) => {
-  const url = getURL(path);
-  try {
-    const response = await fetch(url);
-    return response;
-  } catch (error) {
-    throw new Error(errorMessage);
-  }
-};
-
 // fething single service
 export const getServicebyID = async (id: string) => {
   try {
@@ -72,8 +72,8 @@ export const getServicebyID = async (id: string) => {
 };
 
 // Delete service
-export const deleteService = async (id: string) => {
-  const response = await fetch(`${getURL("/api/crud/services")}/${id}`, {
+export const fetchDELETE = async (id: string, path: string) => {
+  const response = await fetch(`${getURL(path)}/${id}`, {
     method: "DELETE",
   });
 

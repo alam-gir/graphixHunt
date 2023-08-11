@@ -7,8 +7,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Categories } from "@prisma/client";
-import { MoreHorizontalIcon } from "lucide-react";
 import { FC } from "react";
+import CategoriesPopupOptions from "./CategoriesPopupOptions";
 
 interface CategoriesTablePropsType {
   categories: Categories[] | undefined;
@@ -25,7 +25,7 @@ const CategoriesTable: FC<CategoriesTablePropsType> = ({ categories }) => {
         <TableCell>{category.serviceType}</TableCell>
         <TableCell>{date}</TableCell>
         <TableCell className="text-right">
-          <MoreHorizontalIcon className="h-6 w-6 text-gray-600" />
+          <CategoriesPopupOptions id={category.id} />
         </TableCell>
       </TableRow>
     );

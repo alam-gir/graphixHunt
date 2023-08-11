@@ -29,7 +29,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { CheckedState } from "@radix-ui/react-checkbox";
 import { Textarea } from "../ui/textarea";
-import { POSTFetchToOrigin, fetchGET, fetchServices } from "@/lib/fetch";
+import { POSTFetchToOrigin, fetchGET } from "@/lib/fetch";
 import { Services } from "@prisma/client";
 import { ImagePlusIcon } from "lucide-react";
 import ShowIcon from "./ShowIcon";
@@ -56,7 +56,7 @@ const formSchema = z.object({
 });
 interface CategoriesFormProps {
   previousValue?: { name: string };
-  submitHandler: (data: any) => Promise<void>;
+  submitHandler?: (data: any) => Promise<void>;
 }
 
 const CategoriesForm: FC<CategoriesFormProps> = ({

@@ -1,6 +1,6 @@
 import { PaginationOpt } from "@/types/types";
 import { type ClassValue, clsx } from "clsx";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { toast } from "react-hot-toast";
 import { twMerge } from "tailwind-merge";
 

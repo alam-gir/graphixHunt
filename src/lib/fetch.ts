@@ -38,17 +38,13 @@ export const fetchGET = async (path: string, errorMessage: string) => {
 };
 
 // update service
-export const updateService = async (
-  data: any,
-  prevService: Services,
-  onSuccess: () => void
-) => {
-  const response = await fetch(`${url}/${prevService.id}`, {
+export const fetchPUT = async (data: any, path: string) => {
+  const response = await fetch(`${path}`, {
     method: "PUT",
     headers: {
       "Content-type": "application/json",
     },
-    body: JSON.stringify({ data, id: prevService.id }),
+    body: JSON.stringify(data),
   });
   console.log(response);
 
@@ -56,9 +52,8 @@ export const updateService = async (
   if (response.ok) {
     // toast appear on success
     toast.success("Alhamdulillah. Service updated successfully!");
-    // onFinish run
-    onSuccess();
   }
+  return response;
 };
 
 // fething single service

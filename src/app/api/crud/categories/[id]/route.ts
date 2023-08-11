@@ -42,7 +42,7 @@ export const DELETE = async (
     });
     // if confirm deleted category then delete image from coudinary with public id
     const deleteIcon = await deleteFileFromCloudinary(
-      deleteCategory.categoriesIcon?.publicId!
+      deleteCategory.categoriesIcon?.public_id!
     );
     return new Response("ok", { status: 200 });
   } catch (error) {

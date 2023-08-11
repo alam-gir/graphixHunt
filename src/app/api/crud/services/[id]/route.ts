@@ -28,7 +28,7 @@ export const PUT = async (
   try {
     // get data from admin
     const { id } = params;
-    const newData = (await req.json()).data;
+    const newData = await req.json();
 
     // update the data
     const updatedData = await db.services.update({

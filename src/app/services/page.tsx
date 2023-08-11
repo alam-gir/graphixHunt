@@ -4,7 +4,7 @@ import ServiceForm from "@/components/ServiceForm";
 import ServicesTable from "@/components/Table/ServicesTable";
 import TitleBar from "@/components/TitleBar";
 import { useStatesContext } from "@/context/StatesProvider";
-import { createService, updateService } from "@/lib/fetch";
+import { createService, fetchPUT } from "@/lib/fetch";
 import { FC } from "react";
 
 interface pageProps {}
@@ -48,9 +48,15 @@ const Page: FC<pageProps> = ({}) => {
           >
             <ServiceForm
               submitHandler={(data) =>
-                updateService(data, selectedService!, () =>
-                  setServicesFetchStatus((prev) => !prev)
-                ).then(() => setOpenUpdateService(false))
+                fetchPUT(
+                  data,
+                  `/api/crud/services/${selectedService?.id}`
+                ).then((response) => {
+                  if (response.ok) {
+                    setServicesFetchStatus((prev) => !prev);
+                    setOpenUpdateService(false);
+                  }
+                })
               }
               previousValue={{ name: selectedService?.name! }}
             />

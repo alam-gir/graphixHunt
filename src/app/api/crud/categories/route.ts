@@ -14,7 +14,7 @@ export const GET = async (req: NextRequest) => {
         categoriesIcon: {
           select: {
             downloadLink: true,
-            publicId: true,
+            public_id: true,
           },
         },
       },
@@ -29,7 +29,7 @@ export const GET = async (req: NextRequest) => {
           categoriesIcon: {
             select: {
               downloadLink: true,
-              publicId: true,
+              public_id: true,
             },
           },
         },
@@ -60,7 +60,9 @@ export const POST = async (req: NextRequest) => {
   const { iconFile, ...data } = await req.json();
   try {
     //connect with coudinary & upload icon file in cloudinary
-    const iconDataCloudinay = await uploadFileToCloudinary(
+    const iconDataCloudinay:
+      | { downloadLink: string; public_id: string }
+      | undefined = await uploadFileToCloudinary(
       iconFile,
       "graphixHunt/service_icon"
     );
@@ -80,7 +82,7 @@ export const POST = async (req: NextRequest) => {
           categoriesIcon: {
             create: {
               downloadLink: iconDataCloudinay.downloadLink,
-              publicId: iconDataCloudinay.public_id,
+              public_id: iconDataCloudinay.public_id,
             },
           },
         },
@@ -88,7 +90,7 @@ export const POST = async (req: NextRequest) => {
           categoriesIcon: {
             select: {
               downloadLink: true,
-              publicId: true,
+              public_id: true,
             },
           },
         },

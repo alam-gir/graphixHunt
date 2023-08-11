@@ -93,7 +93,7 @@ model Categories {
 model CategoriesIcon {
   id           String      @id @default(cuid())
   downloadLink String
-  publicId     String
+  public_id    String
   categories   Categories? @relation(fields: [categoriesId], references: [id], onDelete: Cascade)
   categoriesId String?     @unique
 }

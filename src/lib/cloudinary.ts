@@ -1,3 +1,4 @@
+import { CategoriesIcon } from "@prisma/client";
 import { v2 as cloudinary } from "cloudinary";
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -18,7 +19,7 @@ export const uploadFileToCloudinary = async (file: string, folder: string) => {
     };
     return fileCloudinaryData;
   } catch (error) {
-    return new Response(JSON.stringify(error));
+    new Response(JSON.stringify(error));
   }
 };
 
